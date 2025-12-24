@@ -1,11 +1,14 @@
 "use client";
 import React, { useEffect, useState, useCallback, useMemo } from "react";
+
 import { categoryUrl } from "@/api/server";
+import { useRouter } from "next/navigation";
 
 const CategoryFilter = ({ category, setCategory, dark }) => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const route = useRouter();
 
   const fetchCategories = useCallback(async () => {
     try {
@@ -30,9 +33,19 @@ const CategoryFilter = ({ category, setCategory, dark }) => {
     return ["All", ...categories];
   }, [categories]);
 
+  const handleCalender = () => {
+    route.push("/calender");
+  };
+
   return (
     <div className="p-4 flex flex-wrap gap-3 items-center">
-      <span className={`font-medium whitespace-nowrap ${dark?"text-white" : "text-gray-900"}`}>Select Category:</span>
+      <span
+        className={`font-medium whitespace-nowrap ${
+          dark ? "text-white" : "text-gray-900"
+        }`}
+      >
+        Select Category:
+      </span>
 
       <select
         value={category}
@@ -53,7 +66,9 @@ const CategoryFilter = ({ category, setCategory, dark }) => {
             <option
               key={item}
               value={item}
-              className={dark ? "bg-gray-700 text-white" : "bg-white text-black"}
+              className={
+                dark ? "bg-gray-700 text-white" : "bg-white text-black"
+              }
             >
               {item}
             </option>
@@ -69,6 +84,16 @@ const CategoryFilter = ({ category, setCategory, dark }) => {
         }`}
       >
         Reset Category
+      </button>
+      <button
+        onClick={handleCalender}
+        className={`px-3 py-2 rounded-lg text-sm font-semibold transition whitespace-nowrap ${
+          dark
+            ? "bg-black text-white hover:bg-gray-800"
+            : "bg-white text-black border border-gray-300 hover:bg-gray-100"
+        }`}
+      >
+        Go To Calender
       </button>
     </div>
   );
